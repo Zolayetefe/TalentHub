@@ -4,7 +4,9 @@ import User from '../models/User.js';
 
 // Verify JWT Token
 export const verifyToken = async (req, res, next) => {
-  let token = req.headers.authorization?.split(' ')[1];
+  // Extract token from cookies
+  const token = req.cookies?.token;
+  console.log('verifyToken middleware', token);
 
   if (!token) {
     return res.status(401).json({ message: 'Not authorized, no token' });

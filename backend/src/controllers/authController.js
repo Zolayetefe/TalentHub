@@ -52,7 +52,12 @@ export const loginUser = async (req, res) => {
     const isMatch = await user.matchPassword(password);
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-    res.json({
+    res.cookie('token', generateToken(user._id), {
+      httpOnly: true,           // Prevent JavaScript access (XSS protection)
+      secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+      sameSite: 'strict',       // CSRF protection
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    }).json({
       token: generateToken(user._id),
       user: {
         id: user._id,
