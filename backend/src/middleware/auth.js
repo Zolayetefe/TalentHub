@@ -20,7 +20,6 @@ export const verifyToken = async (req, res, next) => {
     return res.status(401).json({ message: 'Not authorized, token failed' });
   }
 };
-
 // Role-based access control
 export const roleCheck = (...roles) => {
   return (req, res, next) => {

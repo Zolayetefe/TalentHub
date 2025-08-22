@@ -44,12 +44,14 @@ export const registerUser = async (req, res) => {
 // login user
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+ 
   try {
     const user = await User.findOne({ email });
+    console.log('user', user);
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
     const isMatch = await user.matchPassword(password);
+    console.log('isMatch', isMatch);
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
     res.cookie('token', generateToken(user._id), {
