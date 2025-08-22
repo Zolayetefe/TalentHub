@@ -7,16 +7,23 @@ const generateToken = (id) => {
 };
 
 // register user
+// Register user (only applicant and employer)
 export const registerUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
   try {
+    // Allow only applicant or employer roles
+    const allowedRoles = ['applicant', 'employer'];
+    const userRole = allowedRoles.includes(role) ? role : 'applicant'; // fallback to applicant
+
+    // Check if user already exists
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    user = await User.create({ name, email, password, role });
+    // Create user with validated role
+    user = await User.create({ name, email, password, role: userRole });
 
     res.status(201).json({
       token: generateToken(user._id),
@@ -31,6 +38,7 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 // login user
