@@ -6,7 +6,6 @@ import User from '../models/User.js';
 export const verifyToken = async (req, res, next) => {
   // Extract token from cookies
   const token = req.cookies?.token;
-  console.log('verifyToken middleware', token);
 
   if (!token) {
     return res.status(401).json({ message: 'Not authorized, no token' });
@@ -20,6 +19,7 @@ export const verifyToken = async (req, res, next) => {
     return res.status(401).json({ message: 'Not authorized, token failed' });
   }
 };
+
 // Role-based access control
 export const roleCheck = (...roles) => {
   return (req, res, next) => {
