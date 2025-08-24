@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* optional: white background preference */
+:root, body, #root { background: #fff; }
+
