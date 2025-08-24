@@ -26,7 +26,7 @@ export const registerUser = async (req, res) => {
     user = await User.create({ name, email, password, role: userRole });
 
     res.status(201).json({
-      token: generateToken(user._id),
+      // token: generateToken(user._id),
       user: {
         id: user._id,
         name: user.name,
@@ -59,7 +59,7 @@ export const loginUser = async (req, res) => {
       sameSite: 'strict',       // CSRF protection
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }).json({
-      token: generateToken(user._id),
+      // token: generateToken(user._id),
       user: {
         id: user._id,
         name: user.name,
@@ -70,6 +70,37 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Get current authenticated user
+export const getMe = async (req, res) => {
+  try {
+    // Make sure req.user exists (set by your auth middleware)
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    // Find user by _id
+    const user = await User.findById(req.user._id).select('-password'); // exclude password
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return user data
+    res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Error in getMe:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 
 //logout user
