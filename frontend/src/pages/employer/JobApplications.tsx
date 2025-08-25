@@ -36,7 +36,7 @@ export function JobApplications() {
     }
   };
 
-  const handleStatusUpdate = async (applicationId: string, newStatus: Application["status"]) => {
+  const handleStatusUpdate = async (applicationId: string, newStatus: string) => {
     setUpdatingStatus(applicationId);
     try {
       await updateApplicationStatus(applicationId, newStatus);
@@ -126,7 +126,7 @@ export function JobApplications() {
       </div>
     );
   }
-
+console.log(user?.role !== "employer" && user?.role !== "admin")
   if (user?.role !== "employer" && user?.role !== "admin") {
     return (
       <div className="min-h-screen grid place-items-center">
@@ -134,13 +134,14 @@ export function JobApplications() {
       </div>
     );
   }
-  console.log("job.createdBy",job.createdBy)
-  console.log("user id",user!.id)
-  console.log(job.createdBy !== user?.id)
+  // console.log("job.createdBy",job.createdBy)
+  // console.log("user id",user!.id)
+  // console.log(job.createdBy !== user?.id)
   if (job.createdBy == user?.id || user?.role == "admin") {
     return (
       <div className="min-h-screen grid place-items-center">
-        <div className="text-xl">Access denied. You can only view applications for your own job postings.</div>
+        <div className="text-xl">Access denied. You can onl
+          y view applications for your own job postings.</div>
       </div>
     );
   }

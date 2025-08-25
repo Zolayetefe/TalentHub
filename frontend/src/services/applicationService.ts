@@ -24,7 +24,7 @@ export async function getJobApplications(jobId: string): Promise<Application[]> 
 
 export async function updateApplicationStatus(
   applicationId: string, 
-  status: Application["status"]
+  status: string
 ): Promise<Application> {
   const { data } = await api.patch<Application>(`/applications/${applicationId}`, { status });
   return data;

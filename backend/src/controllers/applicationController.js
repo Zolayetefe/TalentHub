@@ -70,7 +70,7 @@ console.log("before db opration ")
       ApplicationId,
       { status },
       { new: true }
-      
+
     )
     console.log("after db opration ")
      console.log(application)
