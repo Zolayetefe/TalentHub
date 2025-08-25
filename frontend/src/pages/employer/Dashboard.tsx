@@ -177,7 +177,7 @@ export default function EmployerDashboard() {
                       >
                         Edit
                       </button>
-                      <LogoutButton variant="ghost" />
+                    {/* <LogoutButton variant="ghost" /> */}
                     </div>
                   </div>
                 </div>

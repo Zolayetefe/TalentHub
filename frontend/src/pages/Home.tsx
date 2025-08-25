@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Briefcase, Users, Rocket } from "lucide-react";
 
 const Home: React.FC = () => {
   return (
@@ -9,31 +10,30 @@ const Home: React.FC = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-800 to-blue-600 text-white flex flex-col justify-center items-center text-center px-6 py-32">
-        <h1 className="text-5xl font-extrabold mb-4 tracking-tight">
-          TalentHub
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 text-white flex flex-col justify-center items-center text-center px-4 sm:px-6 py-24 sm:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/subtle-white-feathers.png')] opacity-10"></div>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight animate-fade-in-up">
+          Welcome to TalentHub
         </h1>
-        <p className="text-lg sm:text-xl text-blue-100 max-w-2xl mb-8">
-          Connecting talented developers with innovative companies. Post jobs,
-          apply instantly, and grow your career.
+        <p className="text-lg sm:text-xl lg:text-2xl text-blue-100 max-w-3xl mb-8 animate-fade-in-up animation-delay-200">
+          Connecting talented developers with innovative companies. Discover opportunities, post jobs, and build your future.
         </p>
-
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 animate-fade-in-up animation-delay-400">
           <Link
             to="/login"
-            className="bg-white text-blue-700 font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 transition"
+            className="bg-white text-blue-900 font-semibold px-6 sm:px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1"
           >
             Login
           </Link>
           <Link
             to="/register"
-            className="bg-green-500 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg hover:bg-green-600 transition"
+            className="bg-green-600 text-white font-semibold px-6 sm:px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-green-700 transition-all duration-300 transform hover:-translate-y-1"
           >
             Register
           </Link>
           <Link
             to="/jobs"
-            className="bg-blue-900 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg hover:bg-blue-950 transition"
+            className="bg-blue-900 text-white font-semibold px-6 sm:px-8 py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-blue-950 transition-all duration-300 transform hover:-translate-y-1"
           >
             Browse Jobs
           </Link>
@@ -42,35 +42,38 @@ const Home: React.FC = () => {
 
       {/* Features Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold text-blue-900 text-center mb-12">
             Why Choose TalentHub?
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <Briefcase className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold text-blue-900 mb-2">
                 For Job Seekers
               </h3>
               <p className="text-gray-600">
-                Discover jobs, apply with one click, and track your applications in real-time.
+                Explore thousands of job opportunities, apply instantly, and track your applications in real-time.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <Users className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold text-blue-900 mb-2">
                 For Employers
               </h3>
               <p className="text-gray-600">
-                Post job openings, manage applicants, and hire top talent efficiently.
+                Post job openings, review top talent, and streamline your hiring process with ease.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+              <Rocket className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold text-blue-900 mb-2">
                 Fast & Efficient
               </h3>
               <p className="text-gray-600">
-                Seamless hiring process with real-time updates and instant notifications.
+                Experience a seamless platform with real-time updates and instant notifications.
               </p>
             </div>
           </div>
@@ -78,18 +81,18 @@ const Home: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-blue-700 text-white text-center py-16">
-        <h2 className="text-3xl font-bold mb-3">
-          Start your journey with TalentHub
+      <section className="bg-blue-900 text-white text-center py-16">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          Start Your Journey Today
         </h2>
-        <p className="text-blue-200 mb-6">
-          Find your dream job or your next great hire today.
+        <p className="text-blue-200 max-w-2xl mx-auto mb-8">
+          Whether you're seeking your dream job or looking for top talent, TalentHub is your platform for success.
         </p>
         <Link
           to="/jobs"
-          className="bg-green-500 text-white font-medium px-8 py-4 rounded-lg shadow hover:shadow-lg hover:bg-green-600 transition"
+          className="inline-block bg-green-600 text-white font-semibold px-8 sm:px-10 py-4 rounded-lg shadow-lg hover:shadow-xl hover:bg-green-700 transition-all duration-300 transform hover:-translate-y-1"
         >
-          View Jobs
+          Explore Jobs Now
         </Link>
       </section>
 
