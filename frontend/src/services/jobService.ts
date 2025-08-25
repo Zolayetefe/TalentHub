@@ -15,6 +15,7 @@ export interface CreateJobData {
   sector?: string;
   experienceLevel: Job["experienceLevel"];
   deadline: string;
+  status?: "OPEN" | "CLOSED"; 
 }
 
 export async function getAllJobs(): Promise<Job[]> {

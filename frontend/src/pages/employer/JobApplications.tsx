@@ -164,6 +164,7 @@ console.log(user?.role !== "employer" && user?.role !== "admin")
             </div>
             <div className="text-right">
               <div className="text-sm text-gray-600 mb-2">Job Status</div>
+              
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${
                 job.status === "OPEN" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
               }`}>

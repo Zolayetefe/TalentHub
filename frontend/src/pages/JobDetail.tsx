@@ -81,42 +81,49 @@ export default function JobDetail() {
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
-              <div className="flex items-center gap-4 text-gray-600">
-                <span>{job.location.city}, {job.location.country}</span>
-                <span>•</span>
-                <span className="capitalize">{job.jobType.replace("_", " ")}</span>
-                <span>•</span>
-                <span className="capitalize">{job.jobSite}</span>
-              </div>
-            </div>
-            {isAuthenticated && user?.role === "applicant" && (
-              <button
-                onClick={() => setShowApplyModal(true)}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Apply Now
-              </button>
-            )}
-          </div>
-          
-          {/* Job tags */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-              {job.experienceLevel}
-            </span>
-            {job.sector && (
-              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                {job.sector}
-              </span>
-            )}
-            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-              Deadline: {formatDate(job.deadline)}
-            </span>
-          </div>
-        </div>
+  <div className="flex justify-between items-start mb-4">
+    <div>
+      <button
+        onClick={() => navigate("/dashboard")}
+        className="text-blue-600 hover:text-blue-800 mb-4 flex items-center gap-2"
+      >
+        ← Back to Dashboard
+      </button>
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
+      <div className="flex items-center gap-4 text-gray-600">
+        <span>{job.location.city}, {job.location.country}</span>
+        <span>•</span>
+        <span className="capitalize">{job.jobType.replace("_", " ")}</span>
+        <span>•</span>
+        <span className="capitalize">{job.jobSite}</span>
+      </div>
+    </div>
+    {isAuthenticated && user?.role === "applicant" && (
+      <button
+        onClick={() => setShowApplyModal(true)}
+        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Apply Now
+      </button>
+    )}
+  </div>
+  
+  {/* Job tags */}
+  <div className="flex flex-wrap gap-2 mb-4">
+    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+      {job.experienceLevel}
+    </span>
+    {job.sector && (
+      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+        {job.sector}
+      </span>
+    )}
+    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+      Deadline: {formatDate(job.deadline)}
+    </span>
+  </div>
+</div>
+
 
         {/* Job details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
