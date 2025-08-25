@@ -4,6 +4,7 @@ import {
   getJobs,
   getJobById,
   getJobsByEmployer,
+  updateJobStatus,
   deleteJob
 } from '../controllers/jobController.js';
 import { verifyToken, roleCheck } from '../middleware/auth.js';
@@ -14,6 +15,7 @@ router.get('/', getJobs);
 router.get('/:id', getJobById);
 router.get('/employer/:employerId', verifyToken, roleCheck('employer', 'admin'), getJobsByEmployer);
 router.post('/', verifyToken, roleCheck('employer', 'admin'), createJob);
+router.patch("/:jobId",verifyToken,roleCheck('employer', 'admin'),updateJobStatus)
 router.delete('/:id', verifyToken, roleCheck('employer', 'admin'), deleteJob);
 
 export default router;

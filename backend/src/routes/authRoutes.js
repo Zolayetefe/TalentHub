@@ -8,3 +8,4 @@ router.post('/login', loginUser);
 router.get('/me', verifyToken, getMe )
 router.get('/logout', logoutUser);
 export default router;
+

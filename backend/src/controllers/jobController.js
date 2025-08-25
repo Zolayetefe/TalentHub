@@ -132,6 +132,38 @@ export const getJobsByEmployer = async (req, res) => {
   }
 };
 
+// update job status
+export const updateJobStatus = async (req, res) => {
+  try {
+    const { jobId} = req.params;
+    const { status } = req.body;
+
+    // Validate status
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
+    }
+
+    // Update the job status
+    const application = await application.findByIdAndUpdate(
+      jobId,
+      { status },
+      { new: true }
+    )
+     
+
+    if (!application) {
+      return res.status(404).json({ message: "job not found" });
+    }
+
+    res.status(200).json({
+      message: "job status updated successfully",
+      data: application
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // delete job (Employer/Admin only)
 export const deleteJob = async (req, res) => {
   try {
