@@ -142,22 +142,23 @@ export const updateJobStatus = async (req, res) => {
     if (!status) {
       return res.status(400).json({ message: "Status is required" });
     }
-
+  
     // Update the job status
-    const application = await application.findByIdAndUpdate(
+    const job = await Job.findByIdAndUpdate(
       jobId,
       { status },
       { new: true }
+      
     )
-     
 
-    if (!application) {
+
+    if (!job) {
       return res.status(404).json({ message: "job not found" });
     }
 
     res.status(200).json({
       message: "job status updated successfully",
-      data: application
+      data: job
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
