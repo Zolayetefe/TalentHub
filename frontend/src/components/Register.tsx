@@ -30,7 +30,6 @@ export default function Register() {
         <select className="w-full border p-2 mb-4 rounded" value={role} onChange={(e) => setRole(e.target.value as Role)}>
           <option value="applicant">Applicant</option>
           <option value="employer">Employer</option>
-          <option value="admin">Admin</option>
         </select>
         <button className="w-full py-2 rounded bg-green-600 text-white">Register</button>
         <p className="text-sm mt-3 text-center">

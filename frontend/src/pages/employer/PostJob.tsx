@@ -26,6 +26,9 @@ export default function PostJob() {
 
   const [skillInput, setSkillInput] = useState("");
 
+  // ✅ NEW: errors state
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const handleInputChange = (field: keyof CreateJobData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -54,8 +57,33 @@ export default function PostJob() {
     }));
   };
 
+  // ✅ NEW: validation function
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) newErrors.title = "Job title is required.";
+    if (!formData.description.trim()) newErrors.description = "Description is required.";
+    if (!formData.location.city.trim()) newErrors.city = "City is required.";
+    if (!formData.location.country.trim()) newErrors.country = "Country is required.";
+    if (!formData.deadline) {
+      newErrors.deadline = "Deadline is required.";
+    } else if (new Date(formData.deadline) < new Date()) {
+      newErrors.deadline = "Deadline cannot be in the past.";
+    }
+    if (!formData.skills || formData.skills.length === 0) {
+      newErrors.skills = "Please add at least one skill.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // ✅ run validation
+    if (!validate()) return;
+
     setLoading(true);
 
     try {
@@ -97,6 +125,7 @@ export default function PostJob() {
                   className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., Senior React Developer"
                 />
+                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
               </div>
 
               <div>
@@ -180,6 +209,7 @@ export default function PostJob() {
                   className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., San Francisco"
                 />
+                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
               </div>
 
               <div>
@@ -194,6 +224,7 @@ export default function PostJob() {
                   className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="e.g., United States"
                 />
+                {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
               </div>
             </div>
 
@@ -238,6 +269,7 @@ export default function PostJob() {
                   ))}
                 </div>
               )}
+              {errors.skills && <p className="text-red-500 text-sm">{errors.skills}</p>}
             </div>
 
             {/* Description */}
@@ -253,6 +285,7 @@ export default function PostJob() {
                 className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Provide a detailed description of the job responsibilities, requirements, and benefits..."
               />
+              {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
             </div>
 
             {/* Deadline */}
@@ -268,6 +301,7 @@ export default function PostJob() {
                 min={new Date().toISOString().split("T")[0]}
                 className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+              {errors.deadline && <p className="text-red-500 text-sm">{errors.deadline}</p>}
             </div>
 
             {/* Submit */}
@@ -292,4 +326,4 @@ export default function PostJob() {
       </div>
     </div>
   );
-} 
+}
