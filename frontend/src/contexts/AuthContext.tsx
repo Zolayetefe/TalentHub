@@ -5,6 +5,7 @@ import { loginUser, registerUser, getCurrentUser, logoutUser } from "../services
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
+  isAuthenticated: boolean; // ✅ new
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string, role?: Role) => Promise<void>;
   logout: () => Promise<void>;
@@ -55,7 +56,18 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     setUser(null);
   };
 
-  const value = useMemo(() => ({ user, isLoading, login, register, logout }), [user, isLoading]);
+  const value = useMemo(
+    () => ({
+      user,
+      isLoading,
+      isAuthenticated: !!user, // ✅ derived state
+      login,
+      register,
+      logout,
+    }),
+    [user, isLoading]
+  );
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
