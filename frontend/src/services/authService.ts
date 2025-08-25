@@ -28,5 +28,5 @@ export async function getCurrentUser(): Promise<AuthResponse> {
 
 // Logout
 export async function logoutUser(): Promise<void> {
-  await api.post("/auth/logout"); // This clears the cookie on server side
+  await api.get("/auth/logout"); // This clears the cookie on server side
 }

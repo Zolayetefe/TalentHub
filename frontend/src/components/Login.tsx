@@ -1,17 +1,21 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
   const { login } = useAuth();
   const nav = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await login(email, password);
-    nav("/dashboard", { replace: true });
+    
+    // Redirect to the intended page or dashboard
+    const redirectTo = location.state?.redirectTo || "/dashboard";
+    nav(redirectTo, { replace: true });
   };
 
   return (

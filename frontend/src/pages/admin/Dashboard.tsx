@@ -1,12 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAllJobs, closeJob, updateJob, deleteJob } from "../../services/jobService";
 import type { Job } from "../../types/types";
 import LogoutButton from "../../components/LogoutButton";
 
 export default function AdminDashboard() {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +54,8 @@ export default function AdminDashboard() {
     try {
       const updated = await closeJob(jobId);
       setJobs(prev => prev.map(j => (j._id === jobId ? updated : j)));
+      console.log("Updated job:", updated);
+
     } finally {
       setActingJobId(null);
     }
@@ -66,6 +66,8 @@ export default function AdminDashboard() {
     try {
       const updated = await updateJob(jobId, { status: "OPEN" });
       setJobs(prev => prev.map(j => (j._id === jobId ? updated : j)));
+      console.log("Updated job:", updated);
+
     } finally {
       setActingJobId(null);
     }
@@ -214,12 +216,12 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="flex items-center gap-2 md:ml-6">
-                      <button
+                      {/* <button
                         onClick={() => navigate(`/applications/job/${job._id}`)}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                       >
                         View Applications
-                      </button>
+                      </button> */}
                       {job.status === "OPEN" ? (
                         <button
                           onClick={() => handleClose(job._id)}
@@ -258,3 +260,4 @@ export default function AdminDashboard() {
   
 
 
+  

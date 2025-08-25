@@ -33,19 +33,18 @@ export interface Application {
   jobId: string | {
     _id: string;
     title: string;
-    location:{
+    location?:{
       city:string;
       country:string;
     }
-    jobType:string;
-    jobSite:string;
-
-  };
+    jobType?:string;
+    jobSite?:string;
+  } | null;
   userId: string | {
     _id: string;
     name: string;
     email: string;
-  };
+  } | null;
   resumeUrl?: string; 
   coverLetter?: string; 
   status: "applied" | "shortlisted" | "rejected"; 

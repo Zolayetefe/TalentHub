@@ -18,6 +18,11 @@ export interface CreateJobData {
   status?: "OPEN" | "CLOSED"; 
 }
 
+interface ApiResponse<T> {
+  message: string;
+  data: T;
+}
+
 export async function getAllJobs(): Promise<Job[]> {
   const { data } = await api.get<Job[]>("/jobs");
   return data;
@@ -42,11 +47,11 @@ export async function deleteJob(jobId: string): Promise<void> {
 }
 
 export async function updateJob(jobId: string, jobData: Partial<CreateJobData>): Promise<Job> {
-  const { data } = await api.patch<Job>(`/jobs/${jobId}`, jobData);
-  return data;
+  const { data } = await api.patch<ApiResponse<Job>>(`/jobs/${jobId}`, jobData);
+  return data.data;
 }
 
 export async function closeJob(jobId: string): Promise<Job> {
-  const { data } = await api.patch<Job>(`/jobs/${jobId}`, { status: "CLOSED" });
-  return data;
+  const { data } = await api.patch<ApiResponse<Job>>(`/jobs/${jobId}`, { status: "CLOSED" });
+  return data.data;
 }

@@ -16,6 +16,7 @@ export default function JobDetail() {
   const [coverLetter, setCoverLetter] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [errors, setErrors] = useState<{ coverLetter?: string; resume?: string }>({});
 
   useEffect(() => {
     if (id) {
@@ -35,9 +36,47 @@ export default function JobDetail() {
     }
   };
 
+  const validateInputs = () => {
+    const newErrors: { coverLetter?: string; resume?: string } = {};
+
+    // Validate cover letter (optional, max 2000 characters)
+    if (coverLetter.length > 2000) {
+      newErrors.coverLetter = "Cover letter must be 2000 characters or less";
+    }
+
+    // Validate resume (either file or URL must be provided)
+    if (!resumeFile && !resumeUrl) {
+      newErrors.resume = "Please provide either a resume file or URL";
+    }
+
+    // Validate resume file
+    if (resumeFile) {
+      if (resumeFile.type !== "application/pdf") {
+        newErrors.resume = "Resume must be a PDF file";
+      } else if (resumeFile.size > 5 * 1024 * 1024) {
+        newErrors.resume = "Resume file must be 5MB or less";
+      }
+    }
+
+    // Validate resume URL
+    if (resumeUrl) {
+      const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
+      if (!urlPattern.test(resumeUrl)) {
+        newErrors.resume = "Please provide a valid URL";
+      } else if (!resumeUrl.toLowerCase().endsWith('.pdf')) {
+        newErrors.resume = "Resume URL must point to a PDF file";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleApply = async () => {
     if (!job || !user) return;
     
+    if (!validateInputs()) return;
+
     setApplying(true);
     try {
       await applyForJob({
@@ -49,10 +88,12 @@ export default function JobDetail() {
       setShowApplyModal(false);
       setCoverLetter("");
       setResumeUrl("");
-      // Redirect to dashboard to see applied jobs
+      setResumeFile(null);
+      setErrors({});
       navigate("/dashboard");
     } catch (error) {
       console.error("Error applying for job:", error);
+      setErrors({ resume: "Failed to submit application. Please try again." });
     } finally {
       setApplying(false);
     }
@@ -83,49 +124,59 @@ export default function JobDetail() {
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-  <div className="flex justify-between items-start mb-4">
-    <div>
-      <button
-        onClick={() => navigate("/dashboard")}
-        className="text-blue-600 hover:text-blue-800 mb-4 flex items-center gap-2"
-      >
-        ← Back to Dashboard
-      </button>
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
-      <div className="flex items-center gap-4 text-gray-600">
-        <span>{job.location.city}, {job.location.country}</span>
-        <span>•</span>
-        <span className="capitalize">{job.jobType.replace("_", " ")}</span>
-        <span>•</span>
-        <span className="capitalize">{job.jobSite}</span>
-      </div>
-    </div>
-    {isAuthenticated && user?.role === "applicant" && (
-      <button
-        onClick={() => setShowApplyModal(true)}
-        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-      >
-        Apply Now
-      </button>
-    )}
-  </div>
-  
-  {/* Job tags */}
-  <div className="flex flex-wrap gap-2 mb-4">
-    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-      {job.experienceLevel}
-    </span>
-    {job.sector && (
-      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-        {job.sector}
-      </span>
-    )}
-    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-      Deadline: {formatDate(job.deadline)}
-    </span>
-  </div>
-</div>
-
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="text-blue-600 hover:text-blue-800 mb-4 flex items-center gap-2"
+              >
+                ← Back to Dashboard
+              </button>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
+              <div className="flex items-center gap-4 text-gray-600">
+                <span>{job.location.city}, {job.location.country}</span>
+                <span>•</span>
+                <span className="capitalize">{job.jobType.replace("_", " ")}</span>
+                <span>•</span>
+                <span className="capitalize">{job.jobSite}</span>
+              </div>
+            </div>
+            {!isAuthenticated ? (
+              <button
+                onClick={() => navigate("/login", { state: { redirectTo: `/job/${job._id}` } })}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Login to Apply
+              </button>
+            ) : user?.role === "applicant" ? (
+              <button
+                onClick={() => setShowApplyModal(true)}
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Apply Now
+              </button>
+            ) : user?.role === "employer" || user?.role === "admin" ? (
+              <div className="text-sm text-gray-600 text-right">
+                <p>Employers cannot apply for jobs</p>
+              </div>
+            ) : null}
+          </div>
+          
+          {/* Job tags */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+              {job.experienceLevel}
+            </span>
+            {job.sector && (
+              <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                {job.sector}
+              </span>
+            )}
+            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+              Deadline: {formatDate(job.deadline)}
+            </span>
+          </div>
+        </div>
 
         {/* Job details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -186,7 +237,6 @@ export default function JobDetail() {
               </div>
             </div>
 
-            {/* Action buttons for employers/admins */}
             {(user?.role === "employer" || user?.role === "admin") && job.createdBy === user.id && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h3 className="text-lg font-semibold mb-4">Manage Job</h3>
@@ -223,11 +273,22 @@ export default function JobDetail() {
                 </label>
                 <textarea
                   value={coverLetter}
-                  onChange={(e) => setCoverLetter(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onChange={(e) => {
+                    setCoverLetter(e.target.value);
+                    validateInputs();
+                  }}
+                  className={`w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.coverLetter ? 'border-red-500' : ''
+                  }`}
                   rows={4}
                   placeholder="Tell us why you're a great fit for this position..."
                 />
+                {errors.coverLetter && (
+                  <p className="text-red-500 text-xs mt-1">{errors.coverLetter}</p>
+                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  {2000 - coverLetter.length} characters remaining
+                </p>
               </div>
               
               <div>
@@ -237,30 +298,46 @@ export default function JobDetail() {
                 <input
                   type="file"
                   accept="application/pdf"
-                  onChange={(e) => setResumeFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onChange={(e) => {
+                    setResumeFile(e.target.files && e.target.files[0] ? e.target.files[0] : null);
+                    validateInputs();
+                  }}
+                  className={`w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.resume ? 'border-red-500' : ''
+                  }`}
                 />
-                <p className="text-xs text-gray-500 mt-1">You can upload a PDF or leave it empty to apply without a resume. You can also paste a URL below if preferred.</p>
+                <p className="text-xs text-gray-500 mt-1">You can upload a PDF (max 5MB) or paste a URL below.</p>
                 <input
                   type="url"
                   value={resumeUrl}
-                  onChange={(e) => setResumeUrl(e.target.value)}
-                  className="mt-2 w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onChange={(e) => {
+                    setResumeUrl(e.target.value);
+                    validateInputs();
+                  }}
+                  className={`mt-2 w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    errors.resume ? 'border-red-500' : ''
+                  }`}
                   placeholder="Optional: https://example.com/resume.pdf"
                 />
+                {errors.resume && (
+                  <p className="text-red-500 text-xs mt-1">{errors.resume}</p>
+                )}
               </div>
             </div>
 
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => setShowApplyModal(false)}
+                onClick={() => {
+                  setShowApplyModal(false);
+                  setErrors({});
+                }}
                 className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleApply}
-                disabled={applying}
+                disabled={applying || Object.keys(errors).length > 0}
                 className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
               >
                 {applying ? "Applying..." : "Submit Application"}
@@ -271,4 +348,4 @@ export default function JobDetail() {
       )}
     </div>
   );
-} 
+}

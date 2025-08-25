@@ -91,9 +91,22 @@ export default function ApplicantDashboard() {
     }
   };
 
-  const getCountryCity = (application: Application) => {
+  const getJobTitle = (application: Application) => {
+    if (application.jobId === null) {
+      return "Job Title Not Available";
+    }
     if (typeof application.jobId !== "string") {
-      return `${application.jobId.location.country}, ${application.jobId.location.city}`;
+      return application.jobId.title || "Job Title Not Available";
+    }
+    return application.job?.title || "Job Title Not Available";
+  };
+
+  const getCountryCity = (application: Application) => {
+    if (application.jobId === null) {
+      return "N/A";
+    }
+    if (typeof application.jobId !== "string") {
+      return `${application.jobId.location?.country || "N/A"}, ${application.jobId.location?.city || "N/A"}`;
     }
     if (application.job?.location) {
       return `${application.job.location.country}, ${application.job.location.city}`;
@@ -102,6 +115,9 @@ export default function ApplicantDashboard() {
   };
 
   const getJobType = (application: Application) => {
+    if (application.jobId === null) {
+      return "N/A";
+    }
     if (typeof application.jobId !== "string") {
       return application.jobId.jobType?.replace("_", " ") || "N/A";
     }
@@ -109,6 +125,9 @@ export default function ApplicantDashboard() {
   };
 
   const getJobSite = (application: Application) => {
+    if (application.jobId === null) {
+      return "N/A";
+    }
     if (typeof application.jobId !== "string") {
       return application.jobId.jobSite || "N/A";
     }
@@ -116,6 +135,9 @@ export default function ApplicantDashboard() {
   };
 
   const getJobId = (application: Application) => {
+    if (application.jobId === null) {
+      return "N/A";
+    }
     if (typeof application.jobId === "string") {
       return application.jobId;
     }
@@ -308,7 +330,7 @@ export default function ApplicantDashboard() {
                           <div className="flex justify_between items-start">
                             <div className="flex-1">
                               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {typeof application.jobId === "string" ? (application.job?.title || "Job Title Not Available") : application.jobId.title}
+                                {getJobTitle(application)}
                               </h3>
                               <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                 <span>{getCountryCity(application)}</span>
@@ -338,7 +360,7 @@ export default function ApplicantDashboard() {
               {applications.filter(app => app.status === "shortlisted").length > 0 && (
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-4">Shortlisted</h2>
-                  <div className="bg_white rounded-lg shadow-sm overflow-hidden">
+                  <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {applications
                       .filter(app => app.status === "shortlisted")
                       .map((application) => (
@@ -346,7 +368,7 @@ export default function ApplicantDashboard() {
                           <div className="flex justify_between items-start">
                             <div className="flex-1">
                               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {typeof application.jobId === "string" ? (application.job?.title || "Job Title Not Available") : application.jobId.title}
+                                {getJobTitle(application)}
                               </h3>
                               <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                 <span>{getCountryCity(application)}</span>
@@ -383,7 +405,7 @@ export default function ApplicantDashboard() {
                           <div className="flex justify_between items-start">
                             <div className="flex-1">
                               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {typeof application.jobId === "string" ? (application.job?.title || "Job Title Not Available") : application.jobId.title}
+                                {getJobTitle(application)}
                               </h3>
                               <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                 <span>{getCountryCity(application)}</span>

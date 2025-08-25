@@ -21,9 +21,9 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ className = "", variant = "
   const onClick = async () => {
     try {
       await logout();
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     } catch {
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     }
   };
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { getEmployerJobs } from "../../services/jobService";
+import { getEmployerJobs, closeJob, updateJob } from "../../services/jobService";
 import type { Job } from "../../types/types";
 import LogoutButton from "../../components/LogoutButton";
 export default function EmployerDashboard() {
@@ -9,6 +9,7 @@ export default function EmployerDashboard() {
   const { user } = useAuth();
   const [postedJobs, setPostedJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [actingJobId, setActingJobId] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -33,6 +34,30 @@ export default function EmployerDashboard() {
 
   const getStatusColor = (status: Job["status"]) => {
     return status === "OPEN" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
+  };
+
+  const handleClose = async (jobId: string) => {
+    setActingJobId(jobId);
+    try {
+      const updated = await closeJob(jobId);
+      setPostedJobs(prev => prev.map(j => (j._id === jobId ? updated : j)));
+    } catch (error) {
+      console.error("Error closing job:", error);
+    } finally {
+      setActingJobId(null);
+    }
+  };
+
+  const handleReopen = async (jobId: string) => {
+    setActingJobId(jobId);
+    try {
+      const updated = await updateJob(jobId, { status: "OPEN" });
+      setPostedJobs(prev => prev.map(j => (j._id === jobId ? updated : j)));
+    } catch (error) {
+      console.error("Error reopening job:", error);
+    } finally {
+      setActingJobId(null);
+    }
   };
 
   if (loading) {
@@ -164,20 +189,36 @@ export default function EmployerDashboard() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 ml-6">
+                    <div className="flex items-center gap-2 ml-6">
                       <button
                         onClick={() => navigate(`/applications/job/${job._id}`)}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                       >
                         View Applications
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => navigate(`/employer/edit-job/${job._id}`)}
                         className="text-yellow-600 hover:text-yellow-800 text-sm font-medium"
                       >
                         Edit
-                      </button>
-                    {/* <LogoutButton variant="ghost" /> */}
+                      </button> */}
+                      {job.status === "OPEN" ? (
+                        <button
+                          onClick={() => handleClose(job._id)}
+                          disabled={actingJobId === job._id}
+                          className="text-red-600 hover:text-red-800 text-sm font-medium disabled:opacity-50"
+                        >
+                          {actingJobId === job._id ? "Closing..." : "Close"}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleReopen(job._id)}
+                          disabled={actingJobId === job._id}
+                          className="text-green-600 hover:text-green-800 text-sm font-medium disabled:opacity-50"
+                        >
+                          {actingJobId === job._id ? "Reopening..." : "Reopen"}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -188,5 +229,5 @@ export default function EmployerDashboard() {
       </div>
     </div>
   );
-}
+  }
   
