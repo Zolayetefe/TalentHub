@@ -33,6 +33,13 @@ export interface Application {
   jobId: string | {
     _id: string;
     title: string;
+    location:{
+      city:string;
+      country:string;
+    }
+    jobType:string;
+    jobSite:string;
+
   };
   userId: string | {
     _id: string;

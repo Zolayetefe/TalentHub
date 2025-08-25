@@ -12,8 +12,8 @@ export async function applyForJob(applicationData: CreateApplicationData): Promi
   return data;
 }
 
-export async function getUserApplications(userId: string): Promise<Application[]> {
-  const { data } = await api.get<Application[]>(`/applications/user/${userId}`);
+export async function getUserApplications(): Promise<Application[]> {
+  const { data } = await api.get<Application[]>(`/applications/user/`);
   return data;
 }
 
