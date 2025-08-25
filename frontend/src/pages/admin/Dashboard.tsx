@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { getAllJobs, closeJob, updateJob, deleteJob } from "../../services/jobService";
 import type { Job } from "../../types/types";
+import LogoutButton from "../../components/LogoutButton";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -115,7 +116,7 @@ export default function AdminDashboard() {
               <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
               <p className="text-gray-600 mt-1">Manage all job postings and view applicants</p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="flex items-center gap-3">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -131,6 +132,7 @@ export default function AdminDashboard() {
                 <option value="OPEN">Open</option>
                 <option value="CLOSED">Closed</option>
               </select>
+              <LogoutButton variant="ghost" />
             </div>
           </div>
         </div>
@@ -163,7 +165,10 @@ export default function AdminDashboard() {
           </div>
 
           {filteredJobs.length === 0 ? (
-            <div className="p-12 text-center text-gray-600">No jobs match the current filters.</div>
+            <div className="p-12 text-center text-gray-600">
+              <div className="mb-4">No jobs match the current filters.</div>
+              <LogoutButton />
+            </div>
           ) : (
             <div className="divide-y divide-gray-200">
               {filteredJobs.map(job => (
@@ -251,3 +256,5 @@ export default function AdminDashboard() {
   );
 }
   
+
+

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { getEmployerJobs } from "../../services/jobService";
 import type { Job } from "../../types/types";
-
+import LogoutButton from "../../components/LogoutButton";
 export default function EmployerDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -53,12 +53,15 @@ export default function EmployerDashboard() {
               <h1 className="text-3xl font-bold text-gray-900">Employer Dashboard</h1>
               <p className="text-gray-600 mt-2">Manage your job postings and view applications</p>
             </div>
-            <button
-              onClick={() => navigate("/employer/post-job")}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Post New Job
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate("/employer/post-job")}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Post New Job
+              </button>
+              <LogoutButton variant="ghost" />
+            </div>
           </div>
         </div>
 
@@ -103,12 +106,15 @@ export default function EmployerDashboard() {
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">No jobs posted yet</h3>
               <p className="text-gray-600 mb-6">Start attracting talent by posting your first job</p>
-              <button
-                onClick={() => navigate("/employer/post-job")}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Post Your First Job
-              </button>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={() => navigate("/employer/post-job")}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Post Your First Job
+                </button>
+                <LogoutButton />
+              </div>
             </div>
           ) : (
             <div className="divide-y divide-gray-200">
@@ -171,6 +177,7 @@ export default function EmployerDashboard() {
                       >
                         Edit
                       </button>
+                      <LogoutButton variant="ghost" />
                     </div>
                   </div>
                 </div>

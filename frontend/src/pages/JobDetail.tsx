@@ -15,6 +15,7 @@ export default function JobDetail() {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [coverLetter, setCoverLetter] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -43,6 +44,7 @@ export default function JobDetail() {
         jobId: job._id,
         coverLetter,
         resumeUrl: resumeUrl || undefined,
+        resumeFile: resumeFile || undefined,
       });
       setShowApplyModal(false);
       setCoverLetter("");
@@ -230,14 +232,21 @@ export default function JobDetail() {
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Resume URL (Optional)
+                  Resume (PDF)
                 </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => setResumeFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <p className="text-xs text-gray-500 mt-1">You can upload a PDF or leave it empty to apply without a resume. You can also paste a URL below if preferred.</p>
                 <input
                   type="url"
                   value={resumeUrl}
                   onChange={(e) => setResumeUrl(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="https://example.com/resume.pdf"
+                  className="mt-2 w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Optional: https://example.com/resume.pdf"
                 />
               </div>
             </div>
