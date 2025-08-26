@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { createJob } from "../../services/jobService";
 import type { CreateJobData } from "../../services/jobService";
 import type { Job } from "../../types/types";
+import toast from "react-hot-toast";
 
 export default function PostJob() {
   const navigate = useNavigate();
@@ -88,9 +89,17 @@ export default function PostJob() {
 
     try {
       await createJob(formData);
+      toast.success("Job posted successfully!");
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Error creating job:", error);
+    } catch (err: any) {
+      const data = err?.response?.data;
+      if (data?.errors) {
+        data.errors.forEach((error: { message: string }) => toast.error(error.message));
+      } else if (data?.message) {
+        toast.error(data.message);
+      } else {
+        toast.error("Failed to create job. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

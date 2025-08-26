@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { getJobById } from "../services/jobService";
 import { applyForJob } from "../services/applicationService";
 import type { Job } from "../types/types";
+import toast from "react-hot-toast";
 
 export default function JobDetail() {
   const { id } = useParams<{ id: string }>();
@@ -85,15 +86,22 @@ export default function JobDetail() {
         resumeUrl: resumeUrl || undefined,
         resumeFile: resumeFile || undefined,
       });
+      toast.success("Application submitted successfully!");
       setShowApplyModal(false);
       setCoverLetter("");
       setResumeUrl("");
       setResumeFile(null);
       setErrors({});
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Error applying for job:", error);
-      setErrors({ resume: "Failed to submit application. Please try again." });
+    } catch (err: any) {
+      const data = err?.response?.data;
+      if (data?.errors) {
+        data.errors.forEach((error: { message: string }) => toast.error(error.message));
+      } else if (data?.message) {
+        toast.error(data.message);
+      } else {
+        toast.error("Failed to submit application. Please try again.");
+      }
     } finally {
       setApplying(false);
     }

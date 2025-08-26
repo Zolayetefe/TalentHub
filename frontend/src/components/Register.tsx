@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import type { Role } from "../types/types";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const { register } = useAuth();
@@ -13,21 +14,55 @@ export default function Register() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register(name.trim(), email.toLowerCase(), password, role);
-    nav("/dashboard", { replace: true });
+    try {
+      await register(name.trim(), email.toLowerCase(), password, role);
+      toast.success("Account created successfully!");
+      nav("/dashboard", { replace: true });
+    } catch (err: any) {
+      const data = err?.response?.data;
+      if (data?.errors) {
+        data.errors.forEach((error: { message: string }) => toast.error(error.message));
+      } else if (data?.message) {
+        toast.error(data.message);
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
+    }
   };
 
   return (
     <div className="min-h-screen grid place-items-center">
       <form onSubmit={onSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow">
         <h2 className="text-xl font-semibold mb-4">Create account</h2>
-        <input className="w-full border p-2 mb-3 rounded" placeholder="Full name" value={name}
-               onChange={(e) => setName(e.target.value)} required />
-        <input className="w-full border p-2 mb-3 rounded" type="email" placeholder="Email" value={email}
-               onChange={(e) => setEmail(e.target.value)} required />
-        <input className="w-full border p-2 mb-3 rounded" type="password" placeholder="Password (min 6)"
-               value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} required />
-        <select className="w-full border p-2 mb-4 rounded" value={role} onChange={(e) => setRole(e.target.value as Role)}>
+        <input
+          className="w-full border p-2 mb-3 rounded"
+          placeholder="Full name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          className="w-full border p-2 mb-3 rounded"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          className="w-full border p-2 mb-3 rounded"
+          type="password"
+          placeholder="Password (min 6)"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          minLength={6}
+          required
+        />
+        <select
+          className="w-full border p-2 mb-4 rounded"
+          value={role}
+          onChange={(e) => setRole(e.target.value as Role)}
+        >
           <option value="applicant">Applicant</option>
           <option value="employer">Employer</option>
         </select>
