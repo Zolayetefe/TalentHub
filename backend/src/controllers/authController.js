@@ -25,8 +25,13 @@ export const registerUser = async (req, res) => {
     // Create user with validated role
     user = await User.create({ name, email, password, role: userRole });
 
-    res.status(201).json({
-      // token: generateToken(user._id),
+    res.cookie('token', generateToken(user._id), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    }).status(201).json({
+      message: "User registered successfully",
       user: {
         id: user._id,
         name: user.name,
@@ -59,11 +64,12 @@ export const loginUser = async (req, res) => {
       sameSite: 'strict',       // CSRF protection
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }).json({
-      // token: generateToken(user._id),
       user: {
         id: user._id,
         name: user.name,
-        role: user.role
+        role: user.role,
+        email: user.email
+        
       }
     });
   } catch (error) {

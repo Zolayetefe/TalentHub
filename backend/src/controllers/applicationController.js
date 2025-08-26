@@ -1,35 +1,34 @@
-// import { application } from "express";
-// import Application from "../models/Application.js";
-// src/controllers/applicationController.js
 import Application from "../models/Application.js";
 import { uploadToCloudinary } from "../utils/upload.js";
 
 // POST /applications → Apply to job
-
-
-
- // Create new application
-
-
-
 export const applyToJob = async (req, res) => {
   try {
-    const { jobId} = req.body;
-    const userId = req.user._id
+    const { jobId } = req.body;
+    const userId = req.user._id;
 
     if (!req.file) {
       return res.status(400).json({ message: "Resume file is required" });
     }
 
+    //  Check if user already applied for this job
+    const existingApplication = await Application.findOne({ jobId, userId });
+    if (existingApplication) {
+      return res.status(400).json({
+        message: "You have already applied for this job",
+        application: existingApplication,
+      });
+    }
+
     // Upload resume PDF/DOC to Cloudinary
     const cloudinaryUrl = await uploadToCloudinary(req.file.buffer);
+
     const application = new Application({
       jobId,
       userId,
       resumeUrl: cloudinaryUrl, // store secure_url in DB
       status: "applied",
     });
-    
 
     await application.save();
 
@@ -42,7 +41,6 @@ export const applyToJob = async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
 
 
 // GET /applications/:userId → List user’s applications

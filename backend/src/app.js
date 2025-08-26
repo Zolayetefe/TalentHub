@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
 import applicationRoutes from "./routes/applicationRoutes.js";
 
+
 const app = express();
 
 
@@ -18,7 +19,7 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/jobs', jobRoutes);
-app.use("/applications", applicationRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use("/api/applications", applicationRoutes);
 export default app;
