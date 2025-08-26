@@ -59,15 +59,7 @@ export default function JobDetail() {
       }
     }
 
-    // // Validate resume URL
-    // if (resumeUrl) {
-    //   const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
-    //   if (!urlPattern.test(resumeUrl)) {
-    //     newErrors.resume = "Please provide a valid URL";
-    //   } else if (!resumeUrl.toLowerCase().endsWith('.pdf')) {
-    //     newErrors.resume = "Resume URL must point to a PDF file";
-    //   }
-    // }
+    
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
