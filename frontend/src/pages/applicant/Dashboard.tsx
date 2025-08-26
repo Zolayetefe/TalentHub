@@ -148,44 +148,43 @@ export default function ApplicantDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen grid place-items-center">
-        <div className="text-xl">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-base sm:text-lg">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-50 py-4 px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex justify-between items-center gap-3">
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.name}!</h1>
-              <p className="text-gray-600 mt-2">Explore jobs and track your applications</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">Welcome back, {user?.name}!</h1>
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">Explore jobs and track your applications</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <button
                 onClick={() => setActiveTab(activeTab === "jobs" ? "applications" : "jobs")}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm touch-manipulation"
               >
-                {activeTab === "jobs" ? "View My Applications" : "Browse Jobs"}
+                {activeTab === "jobs" ? "My Applications" : "Browse Jobs"}
               </button>
               <LogoutButton variant="ghost" />
             </div>
           </div>
-
           {/* Tabs */}
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             <button
               onClick={() => setActiveTab("jobs")}
-              className={`px-4 py-2 rounded ${activeTab === "jobs" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+              className={`px-3 py-1.5 rounded text-sm font-medium ${activeTab === "jobs" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"} touch-manipulation`}
             >
               Jobs
             </button>
             <button
               onClick={() => setActiveTab("applications")}
-              className={`px-4 py-2 rounded ${activeTab === "applications" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+              className={`px-3 py-1.5 rounded text-sm font-medium ${activeTab === "applications" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"} touch-manipulation`}
             >
               My Applications
             </button>
@@ -194,23 +193,23 @@ export default function ApplicantDashboard() {
 
         {activeTab === "jobs" ? (
           // Jobs list view
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Filters/Search */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
               <div className="mb-4">
                 <input
                   type="text"
                   placeholder="Search by title, location, sector, skills..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm placeholder-gray-500"
                 />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <select
                   value={jobTypeFilter}
                   onChange={(e) => setJobTypeFilter(e.target.value)}
-                  className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 >
                   <option value="">All Job Types</option>
                   <option value="FULL_TIME">Full Time</option>
@@ -222,7 +221,7 @@ export default function ApplicantDashboard() {
                 <select
                   value={jobSiteFilter}
                   onChange={(e) => setJobSiteFilter(e.target.value)}
-                  className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 >
                   <option value="">All Work Types</option>
                   <option value="ONSITE">Onsite</option>
@@ -232,7 +231,7 @@ export default function ApplicantDashboard() {
                 <select
                   value={experienceFilter}
                   onChange={(e) => setExperienceFilter(e.target.value)}
-                  className="px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+                  className="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 >
                   <option value="">All Experience Levels</option>
                   <option value="JUNIOR">Junior</option>
@@ -240,53 +239,53 @@ export default function ApplicantDashboard() {
                   <option value="SENIOR">Senior</option>
                 </select>
               </div>
-              <div className="mt-4">
-                <button onClick={clearJobFilters} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Clear Filters</button>
+              <div className="mt-3">
+                <button onClick={clearJobFilters} className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm touch-manipulation">Clear Filters</button>
               </div>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-blue-600">{filteredJobs.length}</div>
-                <div className="text-gray-600">Matching Jobs</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-blue-600">{filteredJobs.length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Matching Jobs</div>
               </div>
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-green-600">{filteredJobs.filter(j => j.status === "OPEN").length}</div>
-                <div className="text-gray-600">Open</div>
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-green-600">{filteredJobs.filter(j => j.status === "OPEN").length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Open</div>
               </div>
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-purple-600">{filteredJobs.filter(j => new Date(j.deadline) >= new Date()).length}</div>
-                <div className="text-gray-600">Active Deadlines</div>
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-purple-600">{filteredJobs.filter(j => new Date(j.deadline) >= new Date()).length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Active Deadlines</div>
               </div>
             </div>
 
             {/* Jobs grid */}
             {filteredJobs.length === 0 ? (
-              <div className="bg-white rounded-lg shadow-sm p-12 text-center text-gray-600">No jobs match your criteria.</div>
+              <div className="bg-white rounded-lg shadow-sm p-8 sm:p-12 text-center text-gray-600 text-sm">No jobs match your criteria.</div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredJobs.map(job => (
-                  <div key={job._id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow transition">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${job.status === "OPEN" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>{job.status}</span>
+                  <div key={job._id} className="bg-white rounded-lg shadow-sm p-4 sm:p-6 hover:shadow transition">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">{job.title}</h3>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${job.status === "OPEN" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>{job.status}</span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600 mb-3">
+                    <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                       <span>{job.location.country}, {job.location.city}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span className="capitalize">{job.jobType.replace("_", " ")}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span className="capitalize">{job.jobSite}</span>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                    <div className="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
                       <span>Posted: {formatDate(job.createdAt)}</span>
-                      <span>•</span>
+                      <span className="hidden sm:inline">•</span>
                       <span>Deadline: {formatDate(job.deadline)}</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <button onClick={() => navigate(`/job/${job._id}`)} className="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</button>
-                      <button onClick={() => navigate(`/job/${job._id}`)} className="text-green-600 hover:text-green-800 text-sm font-medium">Apply</button>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <button onClick={() => navigate(`/job/${job._id}`)} className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium touch-manipulation">View Details</button>
+                      <button onClick={() => navigate(`/job/${job._id}`)} className="text-green-600 hover:text-green-800 text-xs sm:text-sm font-medium touch-manipulation">Apply</button>
                     </div>
                   </div>
                 ))}
@@ -297,57 +296,57 @@ export default function ApplicantDashboard() {
           // Applications view
           <>
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-blue-600">{applications.length}</div>
-                <div className="text-gray-600">Total Applications</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-blue-600">{applications.length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Total Applications</div>
               </div>
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-blue-600">{applications.filter(app => app.status === "applied").length}</div>
-                <div className="text-gray-600">Pending Review</div>
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-blue-600">{applications.filter(app => app.status === "applied").length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Pending Review</div>
               </div>
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-yellow-600">{applications.filter(app => app.status === "shortlisted").length}</div>
-                <div className="text-gray-600">Shortlisted</div>
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-yellow-600">{applications.filter(app => app.status === "shortlisted").length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Shortlisted</div>
               </div>
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="text-2xl font-bold text-red-600">{applications.filter(app => app.status === "rejected").length}</div>
-                <div className="text-gray-600">Rejected</div>
+              <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="text-lg sm:text-xl font-bold text-red-600">{applications.filter(app => app.status === "rejected").length}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Rejected</div>
               </div>
             </div>
             
             {/* Applications by Status */}
-            <div className="space-y-8">
+            <div className="space-y-6">
               {/* Applied */}
               {applications.filter(app => app.status === "applied").length > 0 && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Pending Review</h2>
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">Pending Review</h2>
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {applications
                       .filter(app => app.status === "applied")
                       .map((application) => (
-                        <div key={application._id} className="border-b border-gray-200 p-6 hover:bg-gray-50">
-                          <div className="flex justify_between items-start">
+                        <div key={application._id} className="border-b border-gray-200 p-4 sm:p-6 hover:bg-gray-50">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div className="flex-1">
-                              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {getJobTitle(application)}
-                              </h3>
-                              <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 truncate">{getJobTitle(application)}</h3>
+                              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                                 <span>{getCountryCity(application)}</span>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span className="capitalize">{getJobType(application)}</span>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span className="capitalize">{getJobSite(application)}</span>
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <div className="flex flex-wrap gap-2 text-xs sm:text-sm text-gray-500">
                                 <span>Applied: {new Date(application.createdAt).toLocaleDateString()}</span>
-                                {application.coverLetter && (<span>• Cover letter included</span>)}
-                                {application.resumeUrl && (<span>• Resume uploaded</span>)}
+                                {application.coverLetter && (<span className="hidden sm:inline">•</span>)}
+                                {application.coverLetter && (<span>Cover letter included</span>)}
+                                {application.resumeUrl && (<span className="hidden sm:inline">•</span>)}
+                                {application.resumeUrl && (<span>Resume uploaded</span>)}
                               </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(application.status)}`}>{getStatusText(application.status)}</span>
-                              <button onClick={() => navigate(`/job/${getJobId(application)}`)} className="text-blue-600 hover:text-blue-800 text-sm font-medium">View Job</button>
+                            <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-0">
+                              <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium ${getStatusColor(application.status)}`}>{getStatusText(application.status)}</span>
+                              <button onClick={() => navigate(`/job/${getJobId(application)}`)} className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium touch-manipulation">View Job</button>
                             </div>
                           </div>
                         </div>
@@ -359,32 +358,31 @@ export default function ApplicantDashboard() {
               {/* Shortlisted */}
               {applications.filter(app => app.status === "shortlisted").length > 0 && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Shortlisted</h2>
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">Shortlisted</h2>
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {applications
                       .filter(app => app.status === "shortlisted")
                       .map((application) => (
-                        <div key={application._id} className="border-b border-gray-200 p-6 hover:bg-gray-50">
-                          <div className="flex justify_between items-start">
+                        <div key={application._id} className="border-b border-gray-200 p-4 sm:p-6 hover:bg-gray-50">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div className="flex-1">
-                              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {getJobTitle(application)}
-                              </h3>
-                              <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 truncate">{getJobTitle(application)}</h3>
+                              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                                 <span>{getCountryCity(application)}</span>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span className="capitalize">{getJobType(application)}</span>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span className="capitalize">{getJobSite(application)}</span>
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <div className="flex flex-wrap gap-2 text-xs sm:text-sm text-gray-500">
                                 <span>Applied: {new Date(application.createdAt).toLocaleDateString()}</span>
-                                <span>• Shortlisted: {new Date(application.updatedAt).toLocaleDateString()}</span>
+                                <span className="hidden sm:inline">•</span>
+                                <span>Shortlisted: {new Date(application.updatedAt).toLocaleDateString()}</span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(application.status)}`}>{getStatusText(application.status)}</span>
-                              <button onClick={() => navigate(`/job/${getJobId(application)}`)} className="text-blue-600 hover:text-blue-800 text-sm font-medium">View Job</button>
+                            <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-0">
+                              <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium ${getStatusColor(application.status)}`}>{getStatusText(application.status)}</span>
+                              <button onClick={() => navigate(`/job/${getJobId(application)}`)} className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium touch-manipulation">View Job</button>
                             </div>
                           </div>
                         </div>
@@ -396,32 +394,31 @@ export default function ApplicantDashboard() {
               {/* Rejected */}
               {applications.filter(app => app.status === "rejected").length > 0 && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Not Selected</h2>
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">Not Selected</h2>
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {applications
                       .filter(app => app.status === "rejected")
                       .map((application) => (
-                        <div key={application._id} className="border-b border-gray-200 p-6 hover:bg-gray-50">
-                          <div className="flex justify_between items-start">
+                        <div key={application._id} className="border-b border-gray-200 p-4 sm:p-6 hover:bg-gray-50">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                             <div className="flex-1">
-                              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                {getJobTitle(application)}
-                              </h3>
-                              <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 truncate">{getJobTitle(application)}</h3>
+                              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
                                 <span>{getCountryCity(application)}</span>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span className="capitalize">{getJobType(application)}</span>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span className="capitalize">{getJobSite(application)}</span>
                               </div>
-                              <div className="flex items-center gap-4 text-sm text-gray-500">
+                              <div className="flex flex-wrap gap-2 text-xs sm:text-sm text-gray-500">
                                 <span>Applied: {new Date(application.createdAt).toLocaleDateString()}</span>
-                                <span>• Rejected: {new Date(application.updatedAt).toLocaleDateString()}</span>
+                                <span className="hidden sm:inline">•</span>
+                                <span>Rejected: {new Date(application.updatedAt).toLocaleDateString()}</span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(application.status)}`}>{getStatusText(application.status)}</span>
-                              <button onClick={() => navigate(`/job/${getJobId(application)}`)} className="text-blue-600 hover:text-blue-800 text-sm font-medium">View Job</button>
+                            <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-0">
+                              <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium ${getStatusColor(application.status)}`}>{getStatusText(application.status)}</span>
+                              <button onClick={() => navigate(`/job/${getJobId(application)}`)} className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium touch-manipulation">View Job</button>
                             </div>
                           </div>
                         </div>
@@ -432,16 +429,16 @@ export default function ApplicantDashboard() {
 
               {/* No Applications */}
               {applications.length === 0 && (
-                <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+                <div className="bg-white rounded-lg shadow-sm p-8 sm:p-12 text-center">
                   <div className="text-gray-400 mb-4">
-                    <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="mx-auto h-10 sm:h-12 w-10 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No applications yet</h3>
-                  <p className="text-gray-600 mb-6">Start your job search by browsing available positions</p>
-                  <div className="flex items-center justify-center gap-3">
-                    <button onClick={() => setActiveTab("jobs")} className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">Browse Jobs</button>
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No applications yet</h3>
+                  <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6">Start your job search by browsing available positions</p>
+                  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                    <button onClick={() => setActiveTab("jobs")} className="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm touch-manipulation">Browse Jobs</button>
                     <LogoutButton />
                   </div>
                 </div>
