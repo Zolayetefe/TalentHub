@@ -22,7 +22,11 @@ export interface Job {
   sector?: string;
   experienceLevel: "JUNIOR" | "MID" | "SENIOR";
   deadline: string; // ISO date string
-  createdBy: string;
+  createdBy: {
+    _id: string;
+    name: string;
+    email: string;
+  };
   status: "OPEN" | "CLOSED";
   createdAt: string;
   updatedAt: string;

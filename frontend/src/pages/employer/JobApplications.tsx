@@ -137,8 +137,9 @@ export function JobApplications() {
       </div>
     );
   }
-
-  if (job.createdBy !== user?.id && user?.role !== "admin") {
+  console.log(job.createdBy._id,user?.id);
+ console.log(job.createdBy._id=== user?.id);
+  if (job.createdBy._id !== user?.id && user?.role !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-lg sm:text-xl text-center px-4">Access denied. You can only view applications for your own job postings.</div>

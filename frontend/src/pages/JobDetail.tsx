@@ -58,15 +58,15 @@ export default function JobDetail() {
       }
     }
 
-    // Validate resume URL
-    if (resumeUrl) {
-      const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
-      if (!urlPattern.test(resumeUrl)) {
-        newErrors.resume = "Please provide a valid URL";
-      } else if (!resumeUrl.toLowerCase().endsWith('.pdf')) {
-        newErrors.resume = "Resume URL must point to a PDF file";
-      }
-    }
+    // // Validate resume URL
+    // if (resumeUrl) {
+    //   const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
+    //   if (!urlPattern.test(resumeUrl)) {
+    //     newErrors.resume = "Please provide a valid URL";
+    //   } else if (!resumeUrl.toLowerCase().endsWith('.pdf')) {
+    //     newErrors.resume = "Resume URL must point to a PDF file";
+    //   }
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -237,7 +237,7 @@ export default function JobDetail() {
               </div>
             </div>
 
-            {(user?.role === "employer" || user?.role === "admin") && job.createdBy === user.id && (
+            {(user?.role === "employer" || user?.role === "admin") && job.createdBy._id === user.id && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h3 className="text-lg font-semibold mb-4">Manage Job</h3>
                 <div className="space-y-3">
