@@ -4,31 +4,22 @@ import { uploadToCloudinary } from "../utils/upload.js";
 // POST /applications → Apply to job
 export const applyToJob = async (req, res) => {
   try {
-    const { jobId } = req.body;
-    const userId = req.user._id;
+    const { jobId} = req.body;
+    const userId = req.user._id
 
     if (!req.file) {
       return res.status(400).json({ message: "Resume file is required" });
     }
 
-    //  Check if user already applied for this job
-    const existingApplication = await Application.findOne({ jobId, userId });
-    if (existingApplication) {
-      return res.status(400).json({
-        message: "You have already applied for this job",
-        application: existingApplication,
-      });
-    }
-
     // Upload resume PDF/DOC to Cloudinary
     const cloudinaryUrl = await uploadToCloudinary(req.file.buffer);
-
     const application = new Application({
       jobId,
       userId,
       resumeUrl: cloudinaryUrl, // store secure_url in DB
       status: "applied",
     });
+    
 
     await application.save();
 
@@ -42,7 +33,6 @@ export const applyToJob = async (req, res) => {
   }
 };
 
-
 // GET /applications/:userId → List user’s applications
 export const getUserApplications = async (req, res) => {
   try {
@@ -53,7 +43,11 @@ export const getUserApplications = async (req, res) => {
       select: '_id name email' // Select only the required user fields
     })
     .populate("jobId")
-    res.json(applications);
+    if(!applications){
+      return res.status(404).json({ message: "Applications not found" });
+    }
+    res.status(200).json(applications);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

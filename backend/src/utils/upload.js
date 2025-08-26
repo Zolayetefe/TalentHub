@@ -20,7 +20,7 @@ export const uploadToCloudinary = (fileBuffer, folder = "resumes") => {
       const stream = cloudinary.uploader.upload_stream(
         {
           folder,
-          resource_type: "raw", // ✅ important for PDFs
+          resource_type: "raw", // important for PDFs
         },
         (error, result) => {
           if (error) {
