@@ -112,13 +112,4 @@ Notes:
 - Employers/Admins can update application status (shortlist/reject)
 - Resume preview is embedded via `<iframe>` with a fallback link
 
-## Troubleshooting
-- Type import errors with `verbatimModuleSyntax`:
-  - Ensure type-only imports, e.g. `import type { User } from "../types/types";`
-- IDE shows module not found but `npm run build` succeeds:
-  - Restart TS server / Reload window; the compiler is the source of truth
-- CORS/auth issues:
-  - Verify backend CORS allows credentials and same-site cookie settings
 
-## License
-MIT (adjust as needed)
