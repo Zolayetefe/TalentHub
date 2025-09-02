@@ -13,7 +13,7 @@ const app = express();
 app.use(cookieParser());
 app.use(cors({
  
-    origin: ['https://talent-hub-weld.vercel.app'],
+    origin: ['https://talent-hub-weld.vercel.app','http://localhost:5000'],
     methods: ['GET', 'POST', 'PUT', 'PATCH','DELETE', 'OPTIONS'],
     credentials: true
   }));

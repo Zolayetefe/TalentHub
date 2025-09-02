@@ -28,7 +28,7 @@ export const registerUser = async (req, res) => {
     res.cookie('token', generateToken(user._id), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000
     }).status(201).json({
       message: "User registered successfully",
@@ -61,7 +61,7 @@ export const loginUser = async (req, res) => {
     res.cookie('token', generateToken(user._id), {
       httpOnly: true,           // Prevent JavaScript access (XSS protection)
       secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-      sameSite: 'strict',       // CSRF protection
+      sameSite: 'none',      
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }).json({
       user: {

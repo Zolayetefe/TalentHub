@@ -15,10 +15,7 @@ export const createJob = async (req, res) => {
       deadline,
       status
     } = req.body;
-
     
-
-
     const job = await Job.create({
       title: title.trim(),
       description,
@@ -33,7 +30,10 @@ export const createJob = async (req, res) => {
       createdBy: req.user._id
     });
 
-    res.status(201).json(job);
+    res.status(201).json({
+      message: "Job created successfully",
+      data: job
+    });
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(400).json({ 
@@ -83,10 +83,6 @@ export const updateJobStatus = async (req, res) => {
     const { jobId} = req.params;
     const { status } = req.body;
 
-    // Validate status
-    if (!status) {
-      return res.status(400).json({ message: "Status is required" });
-    }
   
     // Update the job status
     const job = await Job.findByIdAndUpdate(
